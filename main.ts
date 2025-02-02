@@ -36,7 +36,7 @@ function zurueckVonRechts () {
     serial.writeValue("zu weit rechts", 1)
     zeigeWeitLinks()
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-    basic.pause(100)
+    basic.pause(5)
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo)
     basic.pause(200)
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, tempo)
@@ -46,22 +46,29 @@ function zurueckVonRechts () {
 }
 function rechtsLenken () {
     if (laenge < 60) {
+        maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
+        basic.pause(5)
         serial.writeValue("GANZRECHTS", abweichung)
         maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo)
         basic.pause(200)
     } else {
+        maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
+        basic.pause(0)
         if (abweichung > 0.5) {
             if (abweichung < 1) {
                 basic.showIcon(IconNames.ArrowWest)
                 serial.writeValue("rechtsLenken", abweichung)
-                maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo)
+                maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo + 5)
                 maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo - 20)
-                basic.pause(150)
+                basic.pause(200)
             } else {
                 basic.showIcon(IconNames.ArrowNorthWest)
                 serial.writeValue("starkrechtsLenken", abweichung)
-                maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo + 0)
-                basic.pause(100)
+                maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo + 15)
+                maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo - 20)
+                basic.pause(250)
+                maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
+                basic.pause(0)
             }
         } else {
             basic.showIcon(IconNames.ArrowSouth)
@@ -74,20 +81,26 @@ function linksLenken () {
     if (laenge < 60) {
         serial.writeValue("GANZLINKS", abweichung)
         maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo)
+        basic.pause(5)
         basic.pause(200)
     } else {
+        maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
+        basic.pause(0)
         if (abweichung > 0.5) {
             if (abweichung < 1) {
                 basic.showIcon(IconNames.ArrowEast)
                 serial.writeValue("linkLenken", abweichung)
-                maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo)
+                maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo + 5)
                 maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo - 20)
-                basic.pause(150)
+                basic.pause(200)
             } else {
                 basic.showIcon(IconNames.ArrowNorthEast)
                 serial.writeValue("starklinksLenken", abweichung)
-                maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo + 0)
-                basic.pause(100)
+                maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo + 15)
+                maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo - 20)
+                basic.pause(250)
+                maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
+                basic.pause(0)
             }
         } else {
             basic.showIcon(IconNames.ArrowSouth)
@@ -109,7 +122,7 @@ function zurueckVonLinks () {
     serial.writeValue("zu weit links", -1)
     zeigeWeitRechts()
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-    basic.pause(100)
+    basic.pause(5)
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo)
     basic.pause(200)
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, tempo)
@@ -141,9 +154,9 @@ basic.forever(function () {
     if (huskylens.isAppear(1, HUSKYLENSResultType_t.HUSKYLENSResultArrow)) {
         berechneALR()
         serial.writeValue("Laenge", laenge)
-        if (xZiel < 120 || xStart < 100) {
+        if (xZiel < 120 && xStart < 100) {
             zurueckVonRechts()
-        } else if (xZiel > 180 || xStart > 200) {
+        } else if (xZiel > 180 && xStart > 200) {
             zurueckVonLinks()
         }
         berechneALR()
