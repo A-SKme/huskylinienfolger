@@ -32,14 +32,14 @@ function zeigeWeitLinks () {
 function zurueckVonRechts () {
     zeigeWeitLinks()
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-    basic.pause(200)
-    maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo + 15)
+    basic.pause(50)
+    maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo + 10)
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo - 20)
     basic.pause(250)
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, tempo)
     basic.pause(50)
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-    basic.pause(100)
+    basic.pause(50)
 }
 function rechtsLenken () {
     if (laenge < 60) {
@@ -107,14 +107,14 @@ function zeigeWeitRechts () {
 function zurueckVonLinks () {
     zeigeWeitRechts()
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-    basic.pause(200)
-    maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo + 5)
+    basic.pause(50)
+    maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo + 10)
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo - 20)
     basic.pause(250)
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, tempo)
     basic.pause(50)
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-    basic.pause(100)
+    basic.pause(50)
 }
 let richtung = 0
 let laenge = 0
@@ -124,7 +124,7 @@ let deltaY = 0
 let xZiel = 0
 let xStart = 0
 let tempo = 0
-tempo = 25
+tempo = 30
 xStart = 0
 xZiel = 0
 deltaY = 0
