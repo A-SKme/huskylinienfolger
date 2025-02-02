@@ -19,9 +19,6 @@ function berechneALR () {
     } else {
         richtung = 1
     }
-    serial.writeValue("Richtung", richtung)
-    serial.writeValue("abweichung", abweichung)
-    serial.writeValue("Richtung", richtung)
 }
 function zeigeWeitLinks () {
     basic.showLeds(`
@@ -33,42 +30,36 @@ function zeigeWeitLinks () {
         `)
 }
 function zurueckVonRechts () {
-    serial.writeValue("zu weit rechts", 1)
     zeigeWeitLinks()
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-    basic.pause(5)
-    maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo)
     basic.pause(200)
+    maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo + 15)
+    maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo - 20)
+    basic.pause(250)
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, tempo)
-    basic.pause(80)
+    basic.pause(50)
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-    basic.pause(5)
+    basic.pause(100)
 }
 function rechtsLenken () {
     if (laenge < 60) {
         maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-        basic.pause(5)
-        serial.writeValue("GANZRECHTS", abweichung)
         maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo)
+        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 0)
         basic.pause(200)
     } else {
         maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-        basic.pause(0)
         if (abweichung > 0.5) {
-            if (abweichung < 1) {
+            if (abweichung < 1.8) {
                 basic.showIcon(IconNames.ArrowWest)
-                serial.writeValue("rechtsLenken", abweichung)
                 maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo + 5)
                 maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo - 20)
-                basic.pause(200)
+                basic.pause(150)
             } else {
                 basic.showIcon(IconNames.ArrowNorthWest)
-                serial.writeValue("starkrechtsLenken", abweichung)
                 maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo + 15)
                 maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo - 20)
-                basic.pause(250)
-                maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-                basic.pause(0)
+                basic.pause(200)
             }
         } else {
             basic.showIcon(IconNames.ArrowSouth)
@@ -80,27 +71,22 @@ function rechtsLenken () {
 function linksLenken () {
     if (laenge < 60) {
         serial.writeValue("GANZLINKS", abweichung)
-        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo)
-        basic.pause(5)
-        basic.pause(200)
-    } else {
         maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-        basic.pause(0)
+        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo)
+        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 0)
+    } else {
         if (abweichung > 0.5) {
-            if (abweichung < 1) {
+            if (abweichung < 1.8) {
+                maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
                 basic.showIcon(IconNames.ArrowEast)
-                serial.writeValue("linkLenken", abweichung)
                 maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo + 5)
                 maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo - 20)
-                basic.pause(200)
+                basic.pause(150)
             } else {
                 basic.showIcon(IconNames.ArrowNorthEast)
-                serial.writeValue("starklinksLenken", abweichung)
                 maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo + 15)
                 maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo - 20)
-                basic.pause(250)
-                maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-                basic.pause(0)
+                basic.pause(200)
             }
         } else {
             basic.showIcon(IconNames.ArrowSouth)
@@ -119,16 +105,16 @@ function zeigeWeitRechts () {
         `)
 }
 function zurueckVonLinks () {
-    serial.writeValue("zu weit links", -1)
     zeigeWeitRechts()
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-    basic.pause(5)
-    maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo)
     basic.pause(200)
+    maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, tempo + 5)
+    maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, tempo - 20)
+    basic.pause(250)
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, tempo)
-    basic.pause(80)
+    basic.pause(50)
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
-    basic.pause(5)
+    basic.pause(100)
 }
 let richtung = 0
 let laenge = 0
@@ -138,7 +124,7 @@ let deltaY = 0
 let xZiel = 0
 let xStart = 0
 let tempo = 0
-tempo = 30
+tempo = 25
 xStart = 0
 xZiel = 0
 deltaY = 0
@@ -153,17 +139,19 @@ basic.forever(function () {
     huskylens.request()
     if (huskylens.isAppear(1, HUSKYLENSResultType_t.HUSKYLENSResultArrow)) {
         berechneALR()
-        serial.writeValue("Laenge", laenge)
-        if (xZiel < 120 && xStart < 100) {
-            zurueckVonRechts()
-        } else if (xZiel > 180 && xStart > 200) {
-            zurueckVonLinks()
-        }
-        berechneALR()
-        if (richtung < 0) {
-            linksLenken()
+        if (Math.abs((xZiel + xStart) / 2) < 120 || Math.abs((xZiel + xStart) / 2) > 180) {
+            if (Math.abs((xZiel + xStart) / 2) < 120) {
+                serial.writeValue("zu weit von Mitte", Math.abs((xZiel - xStart) / 2))
+                zurueckVonRechts()
+            } else if (Math.abs((xZiel + xStart) / 2) > 180) {
+                zurueckVonLinks()
+            }
         } else {
-            rechtsLenken()
+            if (richtung < 0) {
+                linksLenken()
+            } else {
+                rechtsLenken()
+            }
         }
     } else {
         maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
